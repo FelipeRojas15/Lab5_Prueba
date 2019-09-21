@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+          xmlns:ui="http://java.sun.com/jsf/facelets" 
+          xmlns:f="http://xmlns.jcp.org/jsf/core">
+       
+      
+    <h:head></h:head>
+    <h:body>
+        <h:form id="guess_form">
+            <p:panelGrid columns = "1">
+                <p:outputLabel value="#{guessBean.guessNumber}" > </p:outputLabel>
+                <p:outputLabel for="attempt" value="Guess a number from 1 to 10"></p:outputLabel>
+               
+                <p:outputLabel value="Attempts made: #{guessBean.attempts}"></p:outputLabel>
+                <p:outputLabel value="Current price: $#{guessBean.price}"></p:outputLabel>
+                <p:outputLabel value="State of the game: #{guessBean.state}"></p:outputLabel>
+                <p:inputText id="attempt" binding="#{attempt}"></p:inputText>
+                <p:commandButton  value="Send Number" update="guess_form" actionListener="#{guessBean.guess(attempt.value)}" ></p:commandButton>
+                
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>
