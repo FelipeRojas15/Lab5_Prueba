@@ -34,7 +34,6 @@ public class BackingBean {
     private int attempts;
     private int price;
     private String state;
-    private int inputNumber;
 
 
     
@@ -49,9 +48,9 @@ public class BackingBean {
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
     
-    public void guess(){
+    public void guess(int inpiutNumber){
         attempts += 1;
-        if (inputNumber == guessNumber){
+        if (inpiutNumber == guessNumber){
             state="YOU WIN!";    
             
         }                
@@ -60,12 +59,8 @@ public class BackingBean {
         }        
         if((price-10000)<0){            
             state="YOU LOSE!";
-        }
-
-        
-        
-        
-    }
+        }                       
+    }    
     
     public void restart (){
         Random randNumber = new Random();
@@ -75,21 +70,12 @@ public class BackingBean {
         state="Keep Guessing";  
     }
 
-    public int getInputNumber() {
-        return inputNumber;
-    }
-
-    public void setInputNumber(int inputNumber) {
-        this.inputNumber = inputNumber;
-    }    
 
     public int getGuessNumber() {
         return guessNumber;
     }
 
-    public void setGuessNumber(int guessNumber) {
-        this.guessNumber = guessNumber;
-    }
+    
 
     public int getAttempts() {
         return attempts;
