@@ -1,30 +1,35 @@
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3c.org/1999/xhtml"
-xmlns:h="http://xmlns.jcp.org/jsf/html"
-xmlns:p="http://primefaces.org/ui"
-xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
     <h:head>
-	<link rel="stylesheet" type="text/css" href="style.css"></link>
+        
     </h:head>
     <h:body>
         <h:form id="guess_form">
-            <h:panelGrid id = "panel" columns = "1" 
-            cellpadding = "10" cellspacing = "1">
-		<h1 class = "titulo">Bienvenido al juego, Adivine un numero entre 1 y 30!!!</h1>
-                <p:outputLabel value="#{guessBean.numeroAdivinar}" class="adivinar"></p:outputLabel>
-                <p:outputLabel value="#{guessBean.mensajeActual}" id="mensajeA" class="mensajeA"></p:outputLabel>               
-		<h2>Posible premio</h2>
-                <p:outputLabel value="#{guessBean.premio}"></p:outputLabel>
-		<h2>Numero Intentos</h2>
-		<p:outputLabel value="#{guessBean.numeroIntentos}"></p:outputLabel>
-		<h2>Lista Intentos fallidos</h2>
-		<ui:repeat var="item" value="#{guessBean.intentos}">				  
-			<h:outputText value="#{item}" class="lista"/>				    
-		</ui:repeat>
-                <p:inputText id="numero" binding="#{numero}"></p:inputText>
-                <p:commandButton value="Adivinar" update="guess_form" actionListener="#{guessBean.guess(numero.value)}"></p:commandButton>
-                <p:commandButton value="Reiniciar" update="guess_form" actionListener="#{guessBean.reStart}"></p:commandButton>
-            </h:panelGrid>
+            
+            <p:panelGrid columns = "2">
+               
+                
+                <p:inputText id="inputNumber" binding="#{inputNumber}"></p:inputText>
+                <p:outputLabel value="Attempts made: #{guessBean.getAttempts()}"></p:outputLabel>
+               
+                <p:outputLabel value="Attempts Fails: #{guessBean.attemptFails}"> </p:outputLabel>
+                <p:outputLabel value="State of the game: #{guessBean.getState()}"></p:outputLabel>
+                <p:outputLabel value="Current price: #{guessBean.getPrice()}"></p:outputLabel>
+                <p:outputLabel style="display: none; " value="#{guessBean.getGuessNumber()}"> </p:outputLabel>
+                
+                <p:commandButton update="guess_form" value="Send Number" actionListener="#{guessBean.guess(inputNumber.value)}"></p:commandButton>
+                <p:commandButton update="guess_form" value="Reset" actionListener="#{guessBean.restart()}"></p:commandButton>
+            </p:panelGrid>
         </h:form>
     </h:body>
 </html>

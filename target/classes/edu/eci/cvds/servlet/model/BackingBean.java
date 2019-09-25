@@ -5,175 +5,139 @@
  */
 package edu.eci.cvds.servlet.model;
 
+
+import static java.lang.Math.random;
 import java.util.Random;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.*;
+
+
+
 /**
  *
- * La clase ABean sirve para administrar nuestra aplicacion para adivinar un numero 
+ *
+ * El número que actualmente debe adivinar (debe ser un número aleatorio).
+ *
+ * El número de intentos realizados.
+ *
+ * El premio acumulado hasta el momento.
+ *
+ * El estado del juego, que sería una cadena de texto que indica si ya ganó o
+ * no, y si ganó de cuanto es el premio.
+
  */
-@ManagedBean(name="guessBean")
-@SessionScoped
-public class BackingBean{
-   private Random r = new Random();
-   private int numeroAdivinar;
-   private int premio;
-   private int numeroIntentos=0;
-   private String mensajeActual;
-   private List<Integer> intentos;
-   private boolean esGanador;
+@ManagedBean(name = "guessBean")
+@ApplicationScoped
+//@ApplicationScoped
+public class BackingBean {
+    
+    private int guessNumber;
+    private int attempts;
+    private int price;
+    private String state;
+    private int inputNumber;
+    private String attemptFails;
 
-    /**
-     *Constructor
-     */
-    public BackingBean(){
-       this.numeroAdivinar = r.nextInt(30)+1;
-       this.premio = 100000;
-       this.numeroIntentos = 0;
-       this.mensajeActual = "Aun no ha ganado el juego.";
-       this.intentos = new ArrayList<Integer>();
-       this.esGanador = false;
-   }
 
-    /**
-     * Retorna el numero que se debe adivinar
-     * @return
-     */
-    public int getNumeroAdivinar(){
-       return numeroAdivinar;
-   }
-
-    /**
-     * Asigna un nuevo numero a adivinar
-     * @param numeroAdivinar
-     */
-    public void setNumeroAdivinar(int numeroAdivinar){
-       this.numeroAdivinar = numeroAdivinar;
-   }
-
-    /**
-     * Retorna el valor actual del premio.
-     * @return
-     */
-    public int getPremio(){
-       return premio;
-   }
-
-    /**
-     * Asigna un nuevo valor al premio
-     * @param premio
-     */
-    public void setPremio(int premio){
-       this.premio = premio;
-   }
-
-    /**
-     * Se retorna el numero de intentos incorrectos que se han realizado hasta el momento 
-     * @return
-     */
-    public int getNumeroIntentos(){
-       return numeroIntentos;
-   }
-
-    /**
-     * Asigna un valor para el numero de intentos incorrectos que se han realizado hasta el momento
-     * @param numeroIntentos
-     */
-    public void setNumeroIntentos(int numeroIntentos){
-       this.numeroIntentos = numeroIntentos;
-   }
-
-    /**
-     * Retorna el mensaje actual del juego
-     * @return
-     */
-    public String getMensajeActual(){
-       return mensajeActual;
-   }
-
-    /**
-     * Asigna el mensaje actual del juego
-     * @param mensajeActual
-     */
-    public void setMensajeActual(String mensajeActual){
-       this.mensajeActual = mensajeActual;
-   }
-
-    /**
-     * Retorna los intentos incorrectos hasta el momento del juego 
-     * @return
-     */
-    public List<Integer> getIntentos() {
-	   return intentos;
-   }
-
-    /**
-     * Asigna los intentos incorrectos hasta el momento del juego 
-     * @param intentos
-     */
-    public void setIntentos(List<Integer> intentos) {
-	   this.intentos = intentos;
-   }
-
-    /**
-     * Metodo que verifica si se esta colocando un entero en el formulario
-     * @param intento
-     */
-    public void guess(String intento){
-	   try {
-		   int intentow = Integer.parseInt(intento);
-		   guess(intentow);
-	   }catch(java.lang.NumberFormatException e) {	
-		   if(!esGanador & premio > 0) {
-			   setMensajeActual("La entrada debe ser un entero...");
-		   }
-	   }
-   }
-
-    /**
-     * Metodo que se encarga de verificar si un intento es correcto o no
-     * @param intento
-     */
-    public void guess(int intento){
-	       if(!esGanador & (intento > 30 || intento <= 0)  ) {
-	    	   setMensajeActual("El numero debe estar entre 1 y 30!...");		    	   
-	       }
-	       else if (!esGanador & intento!=numeroAdivinar & premio>0){
-	    	   numeroIntentos +=1;
-	    	   setMensajeActual("Incorrecto, Sigue intentando.");
-	           premio -= 10000;
-	           intentos.add(intento);
-	       }
-	       else if (premio<=0){	    	   
-	           setMensajeActual("Ya no puedes realizar mas intentos, por favor reinicie el juego.");	         
-	       }
-	       else if(!esGanador & intento==numeroAdivinar & premio>=0){
-	    	   numeroIntentos +=1;
-	           setMensajeActual("Ganaste, tu premio es: "+premio+".");
-	           this.esGanador = true;
-	       }
-	       else {
-	    	   setMensajeActual("Premio: "+premio+". Pulse reiniciar para jugar con nosotros de nuevo.");
-	       }
-
+    
+    
+    
+    public BackingBean(){ 
+        Random randNumber = new Random();
+        guessNumber = 1+randNumber.nextInt(10);
+        attempts = 0;
+        price=100000;
+        state="Keep Guessing"; 
+        attemptFails="";
+    }
+    
+    public void guess(int inputNumber){
+        
+        
+        if (state != "YOU WIN!" && price>0 ){
+            
+            if(inputNumber == guessNumber){attempts += 1;state="YOU WIN!";}
+            else{
+                price-=10000;attempts += 1;state="YOU LOSE!";
+                attemptFails+= " "+ String.valueOf(attemptFails)+"-";}
+            
+        }                
+        else{
+            if(state!="YOU WIN!" && inputNumber>=0){   
+                
+                state="YOU DON'T HAVE ANY ATTEMPS!";
+                
+            }
+        }
+        
        
-   }
+    }
+    public void guess(String inputNumber){
+        try{
+            
+            this.inputNumber = Integer.parseInt(inputNumber);
+            
+            guess(this.inputNumber);
+        
+        }catch(Exception e){
+            state = "INVALID INPUT, TRY ONLY WITH NUMBERS";
+        }
+    }
+    public void restart (){
+        Random randNumber = new Random();
+        guessNumber = 1+randNumber.nextInt(10);
+        attempts = 0;
+        price=100000;
+        state="Keep Guessing"; 
+        attemptFails="";
+    }
+    public String getattemptFails(){
+        return attemptFails;
+    }
+    
+    public void setattemptFails(String intentosFallidos){
+        this.attemptFails = intentosFallidos;
+    }
+    public int getInputNumber() {
+        return inputNumber;
+    }
 
-    /**
-     * Reinicia los valores del juego
-     */
-    public void reStart(){
-       this.numeroAdivinar = r.nextInt(30);
-       this.premio = 100000;
-       this.mensajeActual = "Aun no ha ganado el juego.";
-       this.numeroIntentos = 0;
-       this.intentos.clear();
-       this.esGanador = false;
-   }
-   
-   
+    public void setInputNumber(int inputNumber) {
+        this.inputNumber = inputNumber;
+    }    
+
+    public int getGuessNumber() {
+        return guessNumber;
+    }
+
+    public void setGuessNumber(int guessNumber) {
+        this.guessNumber = guessNumber;
+    }
+
+    public int getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(int attempts) {
+        this.attempts = attempts;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    
+    
 }
