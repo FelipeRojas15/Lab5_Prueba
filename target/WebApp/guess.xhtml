@@ -11,25 +11,33 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     <h:head>
-        
+        <link rel="stylesheet" type="text/css" href="SS.css" media="all" />
     </h:head>
     <h:body>
+        
+        
         <h:form id="guess_form">
             
-            <p:panelGrid columns = "2">
+            <p:panelGrid columns = "2" >
                
                 
                 <p:inputText id="inputNumber" binding="#{inputNumber}"></p:inputText>
                 <p:outputLabel value="Attempts made: #{guessBean.getAttempts()}"></p:outputLabel>
-               
-                <p:outputLabel value="Attempts Fails: #{guessBean.attemptFails}"> </p:outputLabel>
-                <p:outputLabel value="State of the game: #{guessBean.getState}"></p:outputLabel>
+                <br></br>
+                <p:outputLabel value=""></p:outputLabel>                               
+                
+                <p:outputLabel value="State of the game: #{guessBean.getState()}"></p:outputLabel>
                 <p:outputLabel value="Current price: #{guessBean.getPrice()}"></p:outputLabel>
+                <br></br>
                 <p:outputLabel style="display: none; " value="#{guessBean.getGuessNumber()}"> </p:outputLabel>
                 
                 <p:commandButton update="guess_form" value="Send Number" actionListener="#{guessBean.guess(inputNumber.value)}"></p:commandButton>
                 <p:commandButton update="guess_form" value="Reset" actionListener="#{guessBean.restart()}"></p:commandButton>
             </p:panelGrid>
-        </h:form>
+            <br></br>
+            <p:panelGrid columns = "1" id ="listPane">
+                <p:outputLabel value="List of failed attempts#{guessBean.attemptFails}"> </p:outputLabel>
+            </p:panelGrid>
+        </h:form>        
     </h:body>
 </html>

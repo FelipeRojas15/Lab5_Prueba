@@ -28,7 +28,7 @@ import javax.faces.bean.*;
 
  */
 @ManagedBean(name = "guessBean")
-@SessionScoped
+@ApplicationScoped
 //@ApplicationScoped
 public class BackingBean {
     
@@ -43,41 +43,45 @@ public class BackingBean {
     
     
     
-    public BackingBean(){  
-        
-        restart();
+    public BackingBean(){ 
+        Random randNumber = new Random();
+        guessNumber = 1+randNumber.nextInt(10);
+        attempts = 0;
+        price=100000;
+        state="Keep Guessing"; 
+        attemptFails="";
     }
     
     public void guess(int inputNumber){
         
-        
-        if (state != "YOU WIN!" && price>0 ){
-            
-            if(inputNumber == guessNumber){attempts += 1;state="YOU WIN!";}
-            else{
-                price-=10000;attempts += 1;state="YOU LOSE!";
-                attemptFails+= " "+ String.valueOf(attemptFails)+"-";}
-            
-        }                
-        else{
-            if(state!="YOU WIN!" && inputNumber>=0){   
-                
-                state="YOU DON'T HAVE ANY ATTEMPS!";
-                
+        if (!state.equals("You win")){
+            if (inputNumber==guessNumber & price>0){
+                attempts +=1;
+                setState("You win");
+
             }
+            else if (inputNumber!=guessNumber & price>0){
+                attempts +=1;
+                price -=10000;
+                setState("Numero Incorrecto");
+            }
+            else if (price<=0){
+                setState("no tiene mas intentos");
+            }
+        }else{
+            setState("Ya gano");
         }
-        
+
        
     }
     public void guess(String inputNumber){
         try{
             
-            this.inputNumber = Integer.parseInt(inputNumber);
-            
+            this.inputNumber = Integer.parseInt(inputNumber);  
             guess(this.inputNumber);
         
         }catch(Exception e){
-            state = "INVALID INPUT, TRY ONLY WITH NUMBERS";
+            setState("INVALID INPUT, TRY ONLY WITH NUMBERS");
         }
     }
     public void restart (){
@@ -86,7 +90,6 @@ public class BackingBean {
         attempts = 0;
         price=100000;
         state="Keep Guessing"; 
-        attemptFails="";
     }
     public String getattemptFails(){
         return attemptFails;
