@@ -3,13 +3,13 @@ body {
   
   background-repeat: no-repeat;
   background-size: cover;
+    
 }
 
 
  
 #guess_form {
-  width: 85400;
-  height: 60510;
+
   text-align: center;
   margin-left: 20   px;
   position: absolute;
@@ -18,6 +18,23 @@ body {
   transform: translateX(-50%) translateY(-50%);
   color: black;  
   
+}
+
+#mainPanel{
+    width: 8000px;
+    height: 7000px;
+    
+}
+
+#instructions{
+    color : white;
+    width: 300px;
+    position: absolute;
+    top: 5%;
+    left: 42%;
+    text-align: center;
+    
+    
 }
 
 

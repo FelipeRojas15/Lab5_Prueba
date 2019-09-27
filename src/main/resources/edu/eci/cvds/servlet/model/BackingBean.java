@@ -7,6 +7,7 @@ package edu.eci.cvds.servlet.model;
 
 
 import static java.lang.Math.random;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
@@ -38,6 +39,14 @@ public class BackingBean {
     private String state;
     private int inputNumber;
     private String attemptFails;
+    private ArrayList<Integer> test;
+    
+    private final String winState="YOU WIN!!!";
+    private final String loseState="YOU LOSE!!!";
+    private final String initialState="Try to guess the number!";
+    private final String wrongState="That's the wrong number";
+    private final String invalidState="You are using an invalid number";
+    
 
 
     
@@ -48,28 +57,41 @@ public class BackingBean {
         guessNumber = 1+randNumber.nextInt(10);
         attempts = 0;
         price=100000;
-        state="Keep Guessing"; 
+        state=initialState; 
         attemptFails="";
+        test = new ArrayList<Integer>();
+    }
+
+    public ArrayList<Integer> getTest() {
+        return test;
+    }
+
+    public void setTest(ArrayList<Integer> test) {
+        this.test = test;
     }
     
     public void guess(int inputNumber){
         
-        if (!state.equals("You win")){
+        if (!state.equals(winState)){
             if (inputNumber==guessNumber & price>0){
                 attempts +=1;
-                setState("You win");
+                attemptFails+=Integer.toString(inputNumber);
+                setState(winState);
 
             }
             else if (inputNumber!=guessNumber & price>0){
                 attempts +=1;
+                attemptFails+=Integer.toString(inputNumber)+"-";
+                test.add(inputNumber);
                 price -=10000;
-                setState("Numero Incorrecto");
+                setState(wrongState);
             }
             else if (price<=0){
-                setState("no tiene mas intentos");
+                setState(loseState);
             }
         }else{
-            setState("Ya gano");
+            setState(winState);
+            
         }
 
        
@@ -81,7 +103,7 @@ public class BackingBean {
             guess(this.inputNumber);
         
         }catch(Exception e){
-            setState("INVALID INPUT, TRY ONLY WITH NUMBERS");
+            setState(invalidState);
         }
     }
     public void restart (){
@@ -89,7 +111,7 @@ public class BackingBean {
         guessNumber = 1+randNumber.nextInt(10);
         attempts = 0;
         price=100000;
-        state="Keep Guessing"; 
+        state=initialState; 
     }
     public String getattemptFails(){
         return attemptFails;

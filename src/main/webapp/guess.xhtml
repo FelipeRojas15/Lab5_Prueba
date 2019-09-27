@@ -14,11 +14,11 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="SS.css" media="all" />
     </h:head>
     <h:body>
-        
+        <h2  id="instructions">Try to guess the correct number from 1 to 10! you have 10 attempts</h2>
         
         <h:form id="guess_form">
             
-            <p:panelGrid columns = "2" >
+            <p:panelGrid columns = "2" id="mainPanel">
                
                 
                 <p:inputText id="inputNumber" binding="#{inputNumber}"></p:inputText>
@@ -35,9 +35,10 @@ and open the template in the editor.
                 <p:commandButton update="guess_form" value="Reset" actionListener="#{guessBean.restart()}"></p:commandButton>
             </p:panelGrid>
             <br></br>
-            <p:panelGrid columns = "1" id ="listPane">
-                <p:outputLabel value="List of failed attempts#{guessBean.attemptFails}"> </p:outputLabel>
+            <p:panelGrid columns = "2" id ="listPane">
+                <p:outputLabel value="List of failed attempts:"> </p:outputLabel>                
+                <p:outputLabel value="#{guessBean.test}"></p:outputLabel>
             </p:panelGrid>
-        </h:form>        
+        </h:form> 
     </h:body>
 </html>
